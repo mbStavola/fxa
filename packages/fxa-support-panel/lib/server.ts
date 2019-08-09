@@ -21,17 +21,7 @@ export function init(config: ServerConfig, logger: Logger): hapi.Server {
   const server = new hapi.Server({
     debug: config.env === 'production' ? false : { request: ['error'] },
     host: config.listen.host,
-    port: config.listen.port,
-    routes: {
-      security: {
-        hsts: {
-          includeSubDomains: true,
-          maxAge: 31536000,
-          preload: false
-        },
-        xss: true
-      }
-    }
+    port: config.listen.port
   });
 
   api.init(logger, config, server);
