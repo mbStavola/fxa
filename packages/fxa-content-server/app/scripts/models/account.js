@@ -669,6 +669,7 @@ const Account = Backbone.Model.extend(
         .signUp(this.get('email'), password, relier, {
           metricsContext: this._metrics.getFlowEventMetadata(),
           resume: options.resume,
+          verificationMethod: options.verificationMethod,
         })
         .then(updatedSessionData => {
           this.set(updatedSessionData);
@@ -731,6 +732,33 @@ const Account = Backbone.Model.extend(
         .verifyCode(this.get('uid'), code, options)
         .then(() => {
           if (marketingOptIn) {
+            this._notifier.trigger('flow.initialize');
+            this._notifier.trigger('flow.event', {
+              event: 'newsletter.subscribed',
+            });
+          }
+        });
+    },
+
+    /**
+     * Verify the session and account using the verification code.
+     *
+     * @param {String} code - the verification code
+     * @param {Object} [options]
+     * @param {Object} [options.service] - the service issuing signup request
+     * @returns {Promise} - resolves when complete
+     */
+    verifySessionCode(code, options = {}) {
+      const newsletters = this.get('newsletters');
+      if (newsletters && newsletters.length) {
+        this.unset('newsletters');
+        options.newsletters = newsletters;
+      }
+
+      return this._fxaClient
+        .sessionVerifyCode(this.get('sessionToken'), code, options)
+        .then(() => {
+          if (newsletters) {
             this._notifier.trigger('flow.initialize');
             this._notifier.trigger('flow.event', {
               event: 'newsletter.subscribed',

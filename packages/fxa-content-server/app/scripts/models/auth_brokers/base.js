@@ -573,6 +573,10 @@ const BaseAuthenticationBroker = Backbone.Model.extend({
      */
     signup: true,
     /**
+     * Is using signup codes supported?
+     */
+    signupCode: true,
+    /**
      * Does this environment support pairing?
      */
     supportsPairing: false,

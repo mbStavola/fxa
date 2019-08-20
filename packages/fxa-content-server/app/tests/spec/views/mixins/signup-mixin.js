@@ -54,6 +54,7 @@ describe('views/mixins/signup-mixin', function() {
         notifier: {
           trigger: sinon.spy(),
         },
+        getSignupCodeExperimentGroup: sinon.spy(),
         onSignUpSuccess: SignUpMixin.onSignUpSuccess,
         relier,
         signUp: SignUpMixin.signUp,
