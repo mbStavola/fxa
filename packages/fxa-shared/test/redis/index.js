@@ -128,7 +128,7 @@ describe('redis enabled:', () => {
     it('called dispose correctly', () => {
       assert.equal(dispose.callCount, 1);
       const args = dispose.args[0];
-      assert.lengthOf(args, 2);
+      assert.lengthOf(args, 1);
       assert.equal(args[0], connection);
     });
 
@@ -164,7 +164,7 @@ describe('redis enabled:', () => {
     it('called dispose correctly', () => {
       assert.equal(dispose.callCount, 1);
       const args = dispose.args[0];
-      assert.lengthOf(args, 2);
+      assert.lengthOf(args, 1);
       assert.equal(args[0], connection);
     });
 
@@ -195,7 +195,7 @@ describe('redis enabled:', () => {
     it('called dispose correctly', () => {
       assert.equal(dispose.callCount, 1);
       const args = dispose.args[0];
-      assert.lengthOf(args, 2);
+      assert.lengthOf(args, 1);
       assert.equal(args[0], connection);
     });
 
@@ -227,7 +227,7 @@ describe('redis enabled:', () => {
     it('called dispose correctly', () => {
       assert.equal(dispose.callCount, 1);
       const args = dispose.args[0];
-      assert.lengthOf(args, 2);
+      assert.lengthOf(args, 1);
       assert.equal(args[0], connection);
     });
 
