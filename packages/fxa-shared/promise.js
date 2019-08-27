@@ -4,4 +4,4 @@
 
 'use strict';
 
-module.exports = require('bluebird');
+module.exports = require('bluebird-api');

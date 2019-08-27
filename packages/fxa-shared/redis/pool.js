@@ -96,7 +96,15 @@ module.exports = (config, log) => {
        * @return {Disposer} A bluebird disposer object
        */
       acquire() {
-        return pool.acquire().disposer(connection => pool.release(connection));
+        let connection;
+        return pool
+          .acquire()
+          .then(c => (connection = c))
+          .disposer(() => {
+            if (connection) {
+              return pool.release(connection);
+            }
+          });
       },
 
       /**
