@@ -34,7 +34,10 @@ abstract class SelfUpdatingService<T> {
     const result = await this.updateFunction();
     if (isError(result)) {
       this.logger.error('clientCapabilityService', { err: result });
-      throw result;
+      // subscriptions not enabled on fxa-auth in prod. Bootstrapping workaround
+      // throw result;
+      // skip setting up the timer but don't error out
+      return;
     }
     this.data = result;
     this.timer = setInterval(async () => {
