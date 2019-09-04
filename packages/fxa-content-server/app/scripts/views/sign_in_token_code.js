@@ -6,9 +6,11 @@
  * Allow the user to unblock their signin by entering
  * in a verification code that is sent in an email.
  */
+import Cocktail from 'cocktail';
 import Constants from '../lib/constants';
 import FormView from './form';
 import Template from 'templates/sign_in_token_code.mustache';
+import ResendMixin from './mixins/resend-mixin';
 
 const CODE_INPUT_SELECTOR = 'input.token-code';
 
@@ -44,12 +46,17 @@ const View = FormView.extend({
     const account = this.getAccount();
     const code = this.getElementValue(CODE_INPUT_SELECTOR);
     return account
-      .verifyTokenCode(code)
+      .verifySessionCode(code)
       .then(() => {
         this.logViewEvent('success');
         return this.invokeBrokerMethod('afterCompleteSignInWithCode', account);
       })
       .catch(err => this.showValidationError(this.$(CODE_INPUT_SELECTOR), err));
+  },
+
+  resend() {
+    const account = this.getAccount();
+    return account.verifySessionResendCode();
   },
 
   /**
@@ -64,5 +71,7 @@ const View = FormView.extend({
       : 'signin';
   },
 });
+
+Cocktail.mixin(View, ResendMixin());
 
 export default View;

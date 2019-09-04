@@ -10,6 +10,7 @@ const validators = require('../validators');
 const P = require('../../promise');
 const butil = require('../../crypto/butil');
 const error = require('../../error');
+const otplib = require('otplib');
 
 const BASE_36 = validators.BASE_36;
 
@@ -22,6 +23,7 @@ module.exports = (log, config, customs, db, mailer) => {
     (config.signinUnblock && config.signinUnblock.codeLifetime) || 0;
   const unblockCodeLen =
     (config.signinUnblock && config.signinUnblock.codeLength) || 8;
+  const otpOptions = config.otp;
 
   return {
     validators: {
@@ -347,6 +349,7 @@ module.exports = (log, config, customs, db, mailer) => {
             // Sends an email containing a link to verify login
             return sendVerifyLoginEmail();
           case 'email-2fa':
+          case 'email-otp':
             // Sends an email containing a code that can verify a login
             return sendVerifyLoginCodeEmail();
           case 'email-captcha':
@@ -403,11 +406,18 @@ module.exports = (log, config, customs, db, mailer) => {
           uid: accountRecord.uid,
         });
 
+        const secret = accountRecord.primaryEmail.emailCode;
+        const authenticator = new otplib.authenticator.Authenticator();
+        authenticator.options = Object.assign(
+          otplib.authenticator.options,
+          otpOptions,
+          { secret }
+        );
         const geoData = request.app.geo;
         return mailer
           .sendVerifyLoginCodeEmail(accountRecord.emails, accountRecord, {
             acceptLanguage: request.app.acceptLanguage,
-            code: sessionToken.tokenVerificationCode,
+            code: authenticator.generate(),
             deviceId,
             flowId,
             flowBeginTime,

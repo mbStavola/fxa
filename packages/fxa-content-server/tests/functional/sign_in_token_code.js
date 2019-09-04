@@ -112,7 +112,15 @@ registerSuite('signin token code', {
           // Displays invalid code errors
           .then(type(selectors.SIGNIN_TOKEN_CODE.INPUT, '000000'))
           .then(click(selectors.SIGNIN_TOKEN_CODE.SUBMIT))
-          .then(testElementTextInclude('.tooltip', 'valid code required'))
+          .then(testElementTextInclude('.tooltip', 'expired or invalid code'))
+          // Can resend code
+          .then(click(selectors.SIGNIN_TOKEN_CODE.RESEND))
+          .then(
+            testElementTextInclude(
+              selectors.SIGNIN_TOKEN_CODE.SUCCESS,
+              'Email resent.'
+            )
+          )
 
           // Correctly submits the token code and navigates to oauth page
           .then(testElementExists(selectors.SIGNIN_TOKEN_CODE.HEADER))
