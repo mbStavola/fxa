@@ -9,6 +9,7 @@ import * as requests from 'request-promise-native';
 import { JWT } from '../jwts';
 import { ClientWebhookService } from '../selfUpdatingService/clientWebhookService';
 import { DELETE_EVENT, SUBSCRIPTION_UPDATE_EVENT } from '../serviceNotifications';
+import { version } from '../version';
 import { proxyPayload } from './proxy-validator';
 
 export default class ProxyController {
@@ -20,6 +21,14 @@ export default class ProxyController {
 
   public async heartbeat(request: hapi.Request, h: hapi.ResponseToolkit) {
     return h.response({}).code(200);
+  }
+
+  public async version(request: hapi.Request, h: hapi.ResponseToolkit) {
+    const body = JSON.stringify(version);
+    return h
+      .response(body)
+      .type('application/json')
+      .code(200);
   }
 
   public async proxyDelivery(request: hapi.Request, h: hapi.ResponseToolkit) {
