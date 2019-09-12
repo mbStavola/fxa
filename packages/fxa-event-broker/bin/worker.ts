@@ -37,38 +37,13 @@ export function extractRegionFromUrl(url: string) {
 }
 
 async function main() {
-  const capabilityService = new ClientCapabilityService(
-    logger,
-    Config.get('clientCapabilityFetch')
-  );
+  logger.info('startup', { message: 'Starting event broker...' });
   const webhookService = new ClientWebhookService(
     logger,
     Config.get('clientCapabilityFetch.refreshInterval'),
     db
   );
-  const pubsub = new PubSub();
 
-  // Extract region for SQS object
-  const serviceNotificationQueueUrl = Config.get('serviceNotificationQueueUrl');
-  const region = extractRegionFromUrl(serviceNotificationQueueUrl);
-  if (!region) {
-    logger.error('invalidServiceUrl', {
-      message: 'Cant find region in service url',
-      serviceNotificationQueueUrl
-    });
-    process.exit(8);
-  }
-  const processor = new ServiceNotificationProcessor(
-    logger,
-    db,
-    serviceNotificationQueueUrl,
-    new SQS({ region }),
-    capabilityService,
-    webhookService,
-    pubsub
-  );
-  logger.info('startup', { message: 'Starting event broker...' });
-  processor.start();
   logger.info('startup', { message: 'Starting proxy server...' });
   const server = await proxyServer.init(
     {
