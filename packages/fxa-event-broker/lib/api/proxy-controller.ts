@@ -9,8 +9,8 @@ import * as requests from 'request-promise-native';
 import { JWT } from '../jwts';
 import { ClientWebhookService } from '../selfUpdatingService/clientWebhookService';
 import { DELETE_EVENT, SUBSCRIPTION_UPDATE_EVENT } from '../serviceNotifications';
-import { version } from './version';
 import { proxyPayload } from './proxy-validator';
+import { version } from './version';
 
 export default class ProxyController {
   constructor(
