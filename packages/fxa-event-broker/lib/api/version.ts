@@ -32,8 +32,8 @@ function readJson(filepath: string) {
 
 function getValue(name: string, command: string): string {
   const value =
-    readJson(path.resolve(__dirname, '..', 'version.json')) ||
-    readJson(path.resolve(__dirname, '..', '..', 'version.json'));
+    readJson(path.resolve(__dirname, '..', '..', 'version.json')) ||
+    readJson(path.resolve(__dirname, '..', '..', '..', 'version.json'));
 
   if (value && value.version) {
     return value.version[name];
@@ -54,8 +54,8 @@ function getVersionInfo(): object {
   const source = getValue('source', 'git config --get remote.origin.url');
 
   const packageInfo =
-    readJson(path.resolve(__dirname, '..', 'package.json')) ||
-    readJson(path.resolve(__dirname, '..', '..', 'package.json'));
+    readJson(path.resolve(__dirname, '..', '..', 'package.json')) ||
+    readJson(path.resolve(__dirname, '..', '..', '..', 'package.json'));
 
   if (packageInfo) {
     return {
