@@ -66,6 +66,10 @@ const CLAIMS_SCHEMA = Joi.object({
     .integer()
     .min(0)
     .optional(),
+  'fxa-keysChangedAt': Joi.number()
+    .integer()
+    .min(0)
+    .optional(),
 }).options({ stripUnknown: true });
 const validateClaims = P.promisify(CLAIMS_SCHEMA.validate, {
   context: CLAIMS_SCHEMA,
