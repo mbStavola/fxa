@@ -5,7 +5,7 @@ RUN npm config set unsafe-perm true
 
 RUN npm install -g npm@6 && rm -rf ~app/.npm /tmp/*
 
-RUN apk add --no-cache git make gcc g++
+RUN apk add --no-cache git make gcc g++ python
 
 RUN addgroup -g 10001 app && \
     adduser -D -G app -h /app -u 10001 app
