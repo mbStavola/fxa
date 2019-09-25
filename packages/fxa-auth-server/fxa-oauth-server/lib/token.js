@@ -52,7 +52,7 @@ exports.verify = async function verify(accessToken) {
     // the backlog by either slowly reducing this epoch, or
     // by slowly purging older tokens from the db.
     if (+token.expiresAt >= config.get('expiration.accessTokenExpiryEpoch')) {
-      throw AppError.expiredToken(token.expiresAt);
+      // throw AppError.expiredToken(token.expiresAt);
     }
     logger.warn('token.verify.expired', {
       user: token.userId.toString('hex'),
