@@ -242,7 +242,7 @@ _.extend(Metrics.prototype, Backbone.Events, {
    *                       If unset, a fresh model is created.
    */
   _initializeSubscriptionModel(model) {
-    if (model && model.has('planId') && model.has('productId')) {
+    if (model && model.has('productId')) {
       this._subscriptionModel = model;
     } else {
       this._subscriptionModel = new SubscriptionModel({
