@@ -25,30 +25,36 @@ describe('models/subscription', () => {
 
   it('populates model using options', () => {
     windowMock.location.search = 'foo=bar&plan_id=baz&qux=';
-    windowMock.location.pathname = '/product/wibble';
-    const model = new SubscriptionModel({
-      planId: 'foo',
-      productId: 'bar',
-      window: windowMock,
-    });
+    windowMock.location.pathname = '/subscriptions/products/prod_wibble';
+    const model = new SubscriptionModel(
+      {
+        planId: 'foo',
+        productId: 'bar',
+      },
+      {
+        window: windowMock,
+      }
+    );
 
     assert.equal(model.get('planId'), 'foo');
     assert.equal(model.get('productId'), 'bar');
   });
 
   it('populates model using url params', () => {
-    windowMock.location.search = 'foo=bar&plan_id=baz&qux=';
-    windowMock.location.pathname = '/product/wibble';
+    windowMock.location.pathname = '/subscriptions/products/prod_wibble';
     windowMock.location.search = Url.objToSearchString({
+      foo: 'bar',
+      plan_id: 'baz',
+      qux: '',
       resume: ResumeToken.stringify({
         planId: 'foo',
         productId: 'bar',
       }),
     });
-    const model = new SubscriptionModel();
+    const model = new SubscriptionModel({}, { window: windowMock });
 
     assert.equal(model.get('planId'), 'baz');
-    assert.equal(model.get('productId'), 'wibble');
+    assert.equal(model.get('productId'), 'prod_wibble');
   });
 
   it('populates model using resume token', () => {
@@ -58,7 +64,7 @@ describe('models/subscription', () => {
         productId: 'bar',
       }),
     });
-    const model = new SubscriptionModel();
+    const model = new SubscriptionModel({}, { window: windowMock });
 
     assert.equal(model.get('planId'), 'foo');
     assert.equal(model.get('productId'), 'bar');

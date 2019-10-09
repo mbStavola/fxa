@@ -245,9 +245,12 @@ _.extend(Metrics.prototype, Backbone.Events, {
     if (model && model.has('productId')) {
       this._subscriptionModel = model;
     } else {
-      this._subscriptionModel = new SubscriptionModel({
-        window: this._window,
-      });
+      this._subscriptionModel = new SubscriptionModel(
+        {},
+        {
+          window: this._window,
+        }
+      );
     }
   },
 

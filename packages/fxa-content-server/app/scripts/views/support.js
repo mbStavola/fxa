@@ -141,10 +141,15 @@ const SupportView = BaseView.extend({
       productName = subhubPlan.product_name;
       this.notifier.trigger(
         'subscription.initialize',
-        new SubscriptionModel({
-          planId: subhubPlan.plan_id,
-          productId: subhubPlan.product_id,
-        })
+        new SubscriptionModel(
+          {
+            planId: subhubPlan.plan_id,
+            productId: subhubPlan.product_id,
+          },
+          {
+            window: this.window,
+          }
+        )
       );
     }
 

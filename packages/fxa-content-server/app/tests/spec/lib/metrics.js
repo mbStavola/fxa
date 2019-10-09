@@ -229,7 +229,7 @@ describe('lib/metrics', function() {
   describe('trigger subscription.initialize event with url params', () => {
     beforeEach(() => {
       windowMock.location.search = 'foo=bar&plan_id=wibble';
-      windowMock.location.pathname = '/product/blee';
+      windowMock.location.pathname = '/subscriptions/products/prod_blee';
       notifier.trigger('subscription.initialize');
     });
 
@@ -238,7 +238,7 @@ describe('lib/metrics', function() {
       const subscriptionModel = metrics.getSubscriptionModel();
       assert.instanceOf(subscriptionModel, SubscriptionModel);
       assert.equal(subscriptionModel.get('planId'), 'wibble');
-      assert.equal(subscriptionModel.get('productId'), 'blee');
+      assert.equal(subscriptionModel.get('productId'), 'prod_blee');
     });
   });
 
